@@ -5,12 +5,14 @@ class Drizzle {
     this.options = options
     this.store = store
     this.web3 = {}
-
-    // Wait for window load event in case of injected web3.
-    window.addEventListener('load', () => {
-      // Begin Drizzle initialization.
-      store.dispatch({type: 'DRIZZLE_INITIALIZING', drizzle: this, options})
-    })
+  }
+  init() {
+    // Begin Drizzle initialization.
+    this.store.dispatch({
+      type: 'DRIZZLE_INITIALIZING',
+      drizzle: this,
+      options: this.options,
+    });
   }
 }
 
