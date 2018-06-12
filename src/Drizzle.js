@@ -1,8 +1,3 @@
-// Load as promise so that async Drizzle initialization can still resolve
-var windowPromise = new Promise((resolve, reject) => {
-  window.addEventListener('load', resolve)
-})
-
 class Drizzle {
   constructor(options, store) {
     // Variables
