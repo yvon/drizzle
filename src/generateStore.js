@@ -5,7 +5,7 @@ import reducer from './reducer'
 import { generateContractsInitialState } from './generateContractsInitialState'
 import getAbi from './getAbi'
 
-function generateStore(options) {
+export function generateStore (options) {
   // Redux DevTools
   const composeEnhancers =
     (typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || compose;
@@ -21,16 +21,10 @@ function generateStore(options) {
   const store = createStore(
     reducer,
     preloadedState,
-    composeEnhancers(
-      applyMiddleware(
-        sagaMiddleware
-      )
-    )
+    composeEnhancers(applyMiddleware(sagaMiddleware))
   )
 
   sagaMiddleware.run(rootSaga)
 
   return store
 }
-
-module.exports = generateStore

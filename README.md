@@ -94,7 +94,7 @@ Drizzle is a collection of front-end libraries that make writing dapp frontends 
 
 ## Adding contracts dynamically
 
-You can programmatically add contracts to Drizzle using either Drizzle#addContract or the ADD_CONTRACT action.
+You can programmatically add contracts to Drizzle using either `drizzle.addContract()` or the `ADD_CONTRACT` action.
 
 ```javascript
 var contractConfig = {
@@ -119,13 +119,18 @@ Drizzle has a number of configuration options so it only keeps track of exactly 
   contracts,
   events: {
     contractName: [
-      eventName
+      eventName,
+      {
+        eventName,
+        eventOptions
+      }
     ]
   },
   polls: {
     accounts: interval,
     blocks: interval
   },
+  syncAlways,
   web3: {
     fallback: {
       type
@@ -151,10 +156,13 @@ contracts: [
 ```
 
 ### `events` (object)
-An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store.
+An object consisting of contract names each containing an array of strings of the event names we'd like to listen for and sync with the store. Furthermore, event names may be replaced with an object containing both `eventName` and `eventOptions`, where `eventOptions` field corresponds to the [web3 Contract.events options](https://web3js.readthedocs.io/en/1.0/web3-eth-contract.html#contract-events).
 
 ### `polls` (object)
 An object containing key/value pairs denoting what is being polled and the interval (in ms). Possible polls are accounts and blocks. Accounts will poll for addresses and balances, blocks for new blocks. **Default**: `{ blocks: 3000 }`
+
+### `syncAlways` (boolean)
+If `true`, will replay all contract calls at every block. This is useful if your dapp uses a proxy contract which obfuscates your primary contract's address. By default Drizzle checks blocks to see if a transaction interacting with your contracts has occured. If so, it syncs that contract. **Default**: `false`
 
 ### `web3` (object)
 Options regarding `web3` instantiation.
@@ -202,8 +210,8 @@ An object consisting of the type and url of a fallback web3 provider. This is us
 }
 ```
 
-### `accounts` (array)
-An array of account addresses from `web3`.
+### `accounts` (object)
+An object of account addresses from `web3`.
 
 ### `contracts` (object)
 A series of contract state objects, indexed by the contract name as declared in its ABI.
@@ -272,3 +280,7 @@ An object containing information about the status of Drizzle.
 1. If they did, we replay the calls already in the store to refresh any potentially altered data. If they didn't we continue with the store data.
 
    ![Drizzle Sync Step 4](https://github.com/trufflesuite/drizzle/blob/master/readme/drizzle-sync4.png?raw=true)
+
+## License
+
+[MIT](https://github.com/trufflesuite/drizzle/blob/master/LICENSE.txt)
