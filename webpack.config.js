@@ -9,6 +9,13 @@ module.exports = {
     filename: 'drizzle.js',
     library: 'drizzle',
     libraryTarget: 'umd',
+    /* Solves ReferenceError: window is not defined issue with nextjs.
+     * Since webpack 4?
+     *
+     * Inspired by https://github.com/trufflesuite/drizzle/issues/104
+     * Related issue: https://github.com/webpack/webpack/issues/6784
+     */
+    globalObject: 'typeof window !== \'undefined\' ? window : this',
     path: path.resolve(__dirname, 'dist')
   },
   mode: 'development',
